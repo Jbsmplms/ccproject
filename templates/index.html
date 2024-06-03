@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CC PROJECT</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:wght@400;700&family=Lora:wght@400;700&family=Old+Standard+TT:wght@400;700&family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      body {
+          background-image: url('../static/penguin2.png');
+      }
+
+      h5 {
+        font-family: 'Abril Fatface', cursive;
+      }
+
+      h4 {
+        font-family: 'Lora', serif;
+      }
+
+      label, .feature, .title, ul {
+        font-family: 'Spectral', serif;
+      }
+
+      input[type=number] {
+        font-family: 'Old Standard TT', serif;
+      }
+
+      button {
+        font-family: 'Spectral', serif;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="../static/penguin.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-dark text-white border-bottom shadow-sm" style="opacity: 0.88;">
+      <h5 class="my-0 mr-md-auto font-weight-normal" style="margin: 0 auto;">PENGUIN SPECIES CLASSIFICATION</h5>
+    </div>
+    
+
+    <div class="container p-3 my-3 bg-secondary text-white" style="opacity: 0.94;">
+      {% if chinstrap %}
+        <div class="alert alert-primary">{{chinstrap}}</div>
+      {% elif adelie %}
+        <div class="alert alert-primary">{{adelie}}</div>
+      {% elif gentoo %}
+        <div class="alert alert-primary">{{gentoo}}</div>
+      {% endif %}
+    <form class="form-group" action="/" method="POST">
+      <label for="culmenlength"><span class="feature">Culmen Length in mm:</span> <span class="title">(Values = 32 to 60)</span></label>
+      <input class="form-control" type="number" name="culmenlength">
+      <label for="culmendepth"><span class="feature">Culmen Depth in mm:</span> <span class="title">(Values = 13 to 22)</span></label>
+      <input class="form-control" type="number" name="culmendepth">
+      <label for="flipperlength"><span class="feature">Flipper Length in mm:</span> <span class="title">(Values = 172 to 231)</span></label>
+      <input class="form-control" type="number" name="flipperlength">
+      <label for="bodymass"><span class="feature">Body Mass in g:</span> <span class="title">(Values = 2700 to 6300)</span></label>
+      <input class="form-control" type="number" name="bodymass">
+    </br>
+      <button class="btn btn-dark" type="predict" name="predict">Predict Species</button>
+    </form>
+    </div>
+
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Chinstrap</h4>
+            </div>
+            <div class="card-body" id="chinstrap">
+              <img src="../static/chinstrap.png" alt="Chinstrap Penguin" class="card-img-top">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>The Chinstrap Penguin is a medium-sized penguin readily identified by its distinctive "chinstrap" – a narrow band of black feathers running across its white underparts from chin to cheeks. These agile swimmers are found on sub-Antarctic islands and the Antarctic Peninsula.</li>
+              </ul>
+            </div>
+            </div>
+            <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Adélie</h4>
+            </div>
+            <div class="card-body" id="adelie">
+              <img src="../static/adelie.png" alt="Adelie Penguin" class="card-img-top">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>The Adélie Penguin, a tuxedo-clad resident of Antarctica, boasts a sleek black head, back, and wings contrasting sharply with its snowy white chest and belly. This medium-sized penguin is a master swimmer, expertly navigating icy waters along the Antarctic coast.</li>
+              </ul>
+            </div>
+            </div>
+            <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Gentoo</h4>
+            </div>
+            <div class="card-body" id="gentoo">
+              <img src="../static/gentoo.png" alt="Gentoo Penguin" class="card-img-top">
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>The Gentoo Penguin, a sleek swimmer with a lively spirit, is the fastest underwater penguin, reaching speeds of up to 22 mph! Adorned with a tuxedo of black feathers on its back and head, it boasts a bright white belly and a unique white "cap" stretching across the top of its head to eye.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    </div>
+</body>
+</html>
