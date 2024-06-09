@@ -2,3 +2,5 @@ flask
 pandas
 imbalanced-learn
 scikit-learn
+matplotlib
+seaborn

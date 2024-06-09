@@ -46,6 +46,14 @@
           font-size: 3.5rem;
         }
       }
+
+      .box {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: white;
+        opacity: 0.9;
+      }
     </style>
     <!-- Custom styles for this template -->
     <link href="../static/penguin.css" rel="stylesheet">
@@ -55,67 +63,102 @@
       <h5 class="my-0 mr-md-auto font-weight-normal" style="margin: 0 auto;">PENGUIN SPECIES CLASSIFICATION</h5>
     </div>
     
-
     <div class="container p-3 my-3 bg-secondary text-white" style="opacity: 0.94;">
-      {% if chinstrap %}
-        <div class="alert alert-primary">{{chinstrap}}</div>
-      {% elif adelie %}
-        <div class="alert alert-primary">{{adelie}}</div>
-      {% elif gentoo %}
-        <div class="alert alert-primary">{{gentoo}}</div>
+      {% if result %}
+      <div class="alert alert-primary">{{result}}</div>
+      <div class="alert alert-info">
+        <h4>Summary of Input:</h4>
+        <ul>
+          {% for key, value in summary.items() %}
+            <li><strong>{{key}}:</strong> {{value}}</li>
+          {% endfor %}
+        </ul>
+      </div>
       {% endif %}
-    <form class="form-group" action="/" method="POST">
-      <label for="culmenlength"><span class="feature">Culmen Length in mm:</span> <span class="title">(Values = 32 to 60)</span></label>
-      <input class="form-control" type="number" name="culmenlength">
-      <label for="culmendepth"><span class="feature">Culmen Depth in mm:</span> <span class="title">(Values = 13 to 22)</span></label>
-      <input class="form-control" type="number" name="culmendepth">
-      <label for="flipperlength"><span class="feature">Flipper Length in mm:</span> <span class="title">(Values = 172 to 231)</span></label>
-      <input class="form-control" type="number" name="flipperlength">
-      <label for="bodymass"><span class="feature">Body Mass in g:</span> <span class="title">(Values = 2700 to 6300)</span></label>
-      <input class="form-control" type="number" name="bodymass">
-    </br>
-      <button class="btn btn-dark" type="predict" name="predict">Predict Species</button>
-    </form>
-    </div>
-
-    <div class="container">
-        <div class="card-deck mb-3 text-center">
-            <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Chinstrap</h4>
-            </div>
-            <div class="card-body" id="chinstrap">
-              <img src="../static/chinstrap.png" alt="Chinstrap Penguin" class="card-img-top">
-              <ul class="list-unstyled mt-3 mb-4">
-                <li>The Chinstrap Penguin is a medium-sized penguin readily identified by its distinctive "chinstrap" – a narrow band of black feathers running across its white underparts from chin to cheeks. These agile swimmers are found on sub-Antarctic islands and the Antarctic Peninsula.</li>
-              </ul>
-            </div>
-            </div>
-            <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Adélie</h4>
-            </div>
-            <div class="card-body" id="adelie">
-              <img src="../static/adelie.png" alt="Adelie Penguin" class="card-img-top">
-              <ul class="list-unstyled mt-3 mb-4">
-                <li>The Adélie Penguin, a tuxedo-clad resident of Antarctica, boasts a sleek black head, back, and wings contrasting sharply with its snowy white chest and belly. This medium-sized penguin is a master swimmer, expertly navigating icy waters along the Antarctic coast.</li>
-              </ul>
-            </div>
-            </div>
-            <div class="card mb-4 shadow-sm">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Gentoo</h4>
-            </div>
-            <div class="card-body" id="gentoo">
-              <img src="../static/gentoo.png" alt="Gentoo Penguin" class="card-img-top">
-                <ul class="list-unstyled mt-3 mb-4">
-                  <li>The Gentoo Penguin, a sleek swimmer with a lively spirit, is the fastest underwater penguin, reaching speeds of up to 22 mph! Adorned with a tuxedo of black feathers on its back and head, it boasts a bright white belly and a unique white "cap" stretching across the top of its head to eye.</li>
-                </ul>
-            </div>
+      <form class="form-group" action="/" method="POST">
+        <label for="culmenlength"><span class="feature"><strong>Culmen Length in mm:</strong></span> <span class="title">(Values = 32 to 60)</span></label>
+        <input class="form-control" type="number" name="culmenlength">
+        <label for="culmendepth"><span class="feature"><strong>Depth in mm:</strong></span> <span class="title">(Values = 13 to 22)</span></label>
+        <input class="form-control" type="number" name="culmendepth">
+        <label for="flipperlength"><span class="feature"><strong>Flipper Length in mm:</strong></span> <span class="title">(Values = 172 to 231)</span></label>
+        <input class="form-control" type="number" name="flipperlength">
+        <label for="bodymass"><span class="feature"><strong>Body Mass in g:</strong></span> <span class="title">(Values = 2700 to 6300)</span></label>
+        <input class="form-control" type="number" name="bodymass">
+        <button class="btn btn-primary mt-3" type="submit">Predict Species</button>
+      </form>
+      <br>
+        <h4>Reference:</h4>
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Chinstrap</h5>
+            <ul>
+              <li><strong>Culmen Length:</strong> {{ ranges['culmen_length_mm_min']['Chinstrap'] }} - {{ ranges['culmen_length_mm_max']['Chinstrap'] }} mm</li>
+              <li><strong>Culmen Depth:</strong> {{ ranges['culmen_depth_mm_min']['Chinstrap'] }} - {{ ranges['culmen_depth_mm_max']['Chinstrap'] }} mm</li>
+              <li><strong>Flipper Length:</strong> {{ ranges['flipper_length_mm_min']['Chinstrap'] }} - {{ ranges['flipper_length_mm_max']['Chinstrap'] }} mm</li>
+              <li><strong>Body Mass:</strong> {{ ranges['body_mass_g_min']['Chinstrap'] }} - {{ ranges['body_mass_g_max']['Chinstrap'] }} g</li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Adélie</h5>
+            <ul>
+              <li><strong>Culmen Length:</strong> {{ ranges['culmen_length_mm_min']['Adelie'] }} - {{ ranges['culmen_length_mm_max']['Adelie'] }} mm</li>
+              <li><strong>Culmen Depth:</strong> {{ ranges['culmen_depth_mm_min']['Adelie'] }} - {{ ranges['culmen_depth_mm_max']['Adelie'] }} mm</li>
+              <li><strong>Flipper Length:</strong> {{ ranges['flipper_length_mm_min']['Adelie'] }} - {{ ranges['flipper_length_mm_max']['Adelie'] }} mm</li>
+              <li><strong>Body Mass:</strong> {{ ranges['body_mass_g_min']['Adelie'] }} - {{ ranges['body_mass_g_max']['Adelie'] }} g</li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Gentoo</h5>
+            <ul>
+              <li><strong>Culmen Length:</strong> {{ ranges['culmen_length_mm_min']['Gentoo'] }} - {{ ranges['culmen_length_mm_max']['Gentoo'] }} mm</li>
+              <li><strong>Culmen Depth:</strong> {{ ranges['culmen_depth_mm_min']['Gentoo'] }} - {{ ranges['culmen_depth_mm_max']['Gentoo'] }} mm</li>
+              <li><strong>Flipper Length:</strong> {{ ranges['flipper_length_mm_min']['Gentoo'] }} - {{ ranges['flipper_length_mm_max']['Gentoo'] }} mm</li>
+              <li><strong>Body Mass:</strong> {{ ranges['body_mass_g_min']['Gentoo'] }} - {{ ranges['body_mass_g_max']['Gentoo'] }} g</li>
+            </ul>
+          </div>
         </div>
     </div>
 
-    
+    <div class="container">
+      <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal" style="color: black;">Chinstrap</h4>
+          </div>
+          <div class="card-body" id="chinstrap">
+            <img src="../static/chinstrap.png" alt="Chinstrap Penguin" class="card-img-top">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li style="color: black;">The Chinstrap Penguin is a medium-sized penguin readily identified by its distinctive "chinstrap" – a narrow band of black feathers running across its white underparts from chin to cheeks. These agile swimmers are found on sub-Antarctic islands and the Antarctic Peninsula.</li>
+            </ul>
+          </div>
+          </div>
+          <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal" style="color: black;">Adélie</h4>
+          </div>
+          <div class="card-body" id="adelie">
+            <img src="../static/adelie.png" alt="Adelie Penguin" class="card-img-top">
+            <ul class="list-unstyled mt-3 mb-4">
+              <li style="color: black;">The Adélie Penguin, a tuxedo-clad resident of Antarctica, boasts a sleek black head, back, and wings contrasting sharply with its snowy white chest and belly. This medium-sized penguin is a master swimmer, expertly navigating icy waters along the Antarctic coast.</li>
+            </ul>
+          </div>
+          </div>
+          <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+              <h4 class="my-0 font-weight-normal" style="color: black;">Gentoo</h4>
+          </div>
+          <div class="card-body" id="gentoo">
+            <img src="../static/gentoo.png" alt="Gentoo Penguin" class="card-img-top">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li style="color: black;">The Gentoo Penguin, a sleek swimmer with a lively spirit, is the fastest underwater penguin, reaching speeds of up to 22 mph! Adorned with a tuxedo of black feathers on its back and head, it boasts a bright white belly and a unique white "cap" stretching across the top of its head to eye.</li>
+              </ul>
+        </div>
+      </div>
     </div>
-</body>
+
+      <div class="box mt-3">
+        <h4>Penguin Species Plot</h4>
+        <img src="{{ scatter_plot_url }}" alt="Scatter Plot" class="img-fluid">
+      </div>
+  </body>
 </html>
