@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+import os
+from flask import Flask, render_template, request, current_app
 import penguin_model
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -26,28 +27,29 @@ def basic():
             'Body Mass': body_mass
         }
 
-        # Create scatter plot
-        scatter_plot_url = create_scatter_plot(culmen_length, culmen_depth, flipper_length, body_mass)
+        scatter_plot_url = create_scatter_plot(culmen_length, culmen_depth)
 
-        chinstrap = 'This penguin is classified as Chinstrap.'
-        adelie = 'This penguin is classified as Adélie.'
-        gentoo = 'This penguin is classified as Gentoo.'
-
-        if prediction_value == 'Chinstrap':
-            result = chinstrap
-        elif prediction_value == 'Adelie':
-            result = adelie
-        else:
-            result = gentoo
-        
+        result = determine_species(prediction_value)
         return render_template('index.html', result=result, summary=summary, scatter_plot_url=scatter_plot_url, ranges=get_species_ranges())
     
     return render_template('index.html', ranges=get_species_ranges())
 
-def create_scatter_plot(culmen_length, culmen_depth, flipper_length, body_mass):
+def determine_species(prediction_value):
+    chinstrap = 'This penguin is classified as Chinstrap.'
+    adelie = 'This penguin is classified as Adélie.'
+    gentoo = 'This penguin is classified as Gentoo.'
+
+    if prediction_value == 'Chinstrap':
+        return chinstrap
+    elif prediction_value == 'Adelie':
+        return adelie
+    else:
+        return gentoo
+
+def create_scatter_plot(culmen_length, culmen_depth):
     df = pd.read_csv('penguins.csv')
     df.drop(columns=['island', 'sex'], inplace=True)
-    df.rename(columns={'culmen_length_mm': 'culmen_length', 'culmen_depth_mm': 'culmen_depth', 'flipper_length_mm': 'flipper_length', 'body_mass_g': 'body_mass'}, inplace=True)
+    df.rename(columns={'culmen_length_mm': 'culmen_length', 'culmen_depth_mm': 'culmen_depth'}, inplace=True)
     df = df.dropna()
 
     plt.figure(figsize=(10, 6))
@@ -56,8 +58,9 @@ def create_scatter_plot(culmen_length, culmen_depth, flipper_length, body_mass):
     plt.legend()
     plt.xlabel('Culmen Length (mm)')
     plt.ylabel('Culmen Depth (mm)')
-    
-    plot_path = 'static/scatter_plot.png'
+
+    # Use a relative path
+    plot_path = os.path.join('static', 'scatter_plot.png')
     plt.savefig(plot_path)
     plt.close()
     return plot_path
