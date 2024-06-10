@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, current_app
+from flask import Flask, render_template, request
 import penguin_model
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -59,7 +59,6 @@ def create_scatter_plot(culmen_length, culmen_depth):
     plt.xlabel('Culmen Length (mm)')
     plt.ylabel('Culmen Depth (mm)')
 
-    # Use a relative path
     plot_path = os.path.join('static', 'scatter_plot.png')
     plt.savefig(plot_path)
     plt.close()
