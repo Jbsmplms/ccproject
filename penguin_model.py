@@ -6,16 +6,16 @@ import sklearn.ensemble as ensemble
 df = pd.read_csv('penguins.csv')
 
 df.drop(columns = ['island','sex'], inplace = True)
-df.rename(columns={'culmen_length_mm': 'culmen_length', 'culmen_depth_mm': 'culmen_depth', 'flipper_length_mm': 'flipper_length', 'body_mass_g': 'body_mass'}, inplace=True)
+df.rename(columns={'culmen_length_mm': 'culmen_length', 'culmen_depth_mm': 'culmen_depth', 'flipper_length_mm': 'flipper_length'}, inplace=True)
 df = df.dropna()
 
-X = df.drop('species', axis = 1)
+X = df.drop(['species', 'body_mass_g'], axis = 1)
 y = df['species']
 
 smote = SMOTE(random_state=42)
 X_smote, y_smote = smote.fit_resample(X, y)
 
-X_train, X_test, y_train, y_test = tts(X_smote, y_smote, test_size = 0.3, random_state = 1)
+X_train, X_test, y_train, y_test = tts(X_smote, y_smote, test_size = 0.3, random_state = 143)
 
 def training_model():
     model = ensemble.ExtraTreesClassifier()
